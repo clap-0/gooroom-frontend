@@ -26,7 +26,7 @@ const StyledTab = styled.li`
   }
 
   // 이 탭이 켜져있을 때의 스타일 지정
-  ${activeStyle};
+  ${activeStyle}
 `;
 
 const Tab = ({id, title, activeTab, setActiveTab}) => {
