@@ -39,7 +39,7 @@ const LoginEmail = ({title}) => {
     try {
       const response = await postLogin(body);
 
-      const accessToken = response?.headers['Authorization'];
+      const accessToken = response?.headers['authorization'];
 
       if (!accessToken) {
         console.log(response);
