@@ -7,7 +7,7 @@ const Room = ({address}) => {
   useEffect(() => {
     const container = document.getElementById('map');
     const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
+      center: new kakao.maps.LatLng(37.4945, 126.9597),
       level: 3,
     };
 
