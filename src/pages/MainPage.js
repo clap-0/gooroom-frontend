@@ -10,7 +10,7 @@ const StyledHero = styled.div`
   align-items: center;
 
   width: 100vw;
-  height: 55vh;
+  height: 70vh;
 
   background: #9795b5;
   color: white;
