@@ -9,6 +9,7 @@ import {format} from 'date-fns';
 import useAlert from 'hooks/useAlert';
 import {LOGIN_EMAIL} from 'constants/path';
 import CODE from 'constants/errorCode';
+import useMobileAuth from 'components/common/MobileAuth/useMobileAuth';
 
 const Signup = ({title}) => {
   // 회원가입 폼에서 필드의 값과 유효성 검증을 위해 사용
@@ -16,6 +17,10 @@ const Signup = ({title}) => {
     resolver: yupResolver(validationSchema),
   });
   const {setError, setFocus} = formMethods;
+
+  // 전화번호 인증를 위한 커스텀 훅
+  const mobileAuthMethods = useMobileAuth();
+  const {mobile} = mobileAuthMethods;
 
   // 페이지 이동을 위해 사용
   const navigate = useNavigate();
@@ -28,7 +33,7 @@ const Signup = ({title}) => {
    * @param {object} data - react-hook-form을 통해 관리하는 필드의 값이다.
    */
   const onSubmit = async data => {
-    const {email, password, name, nickname, mobile, gender, birthdate} = data;
+    const {email, password, name, nickname, gender, birthdate} = data;
 
     const body = JSON.stringify({
       email,
@@ -84,6 +89,7 @@ const Signup = ({title}) => {
       <AuthForm title={title}>
         <SignupForm
           formMethods={formMethods}
+          mobileAuthMethods={mobileAuthMethods}
           onSubmit={onSubmit}
           onInvalid={onInvalid}
         ></SignupForm>

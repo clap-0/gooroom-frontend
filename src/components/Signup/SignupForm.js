@@ -1,4 +1,4 @@
-import {Col, Form, Modal, Row} from 'react-bootstrap';
+import {Form} from 'react-bootstrap';
 import Button from 'components/common/Button';
 import ModalButton from './ModalButton';
 import {
@@ -8,10 +8,10 @@ import {
   nameMax,
   nameMin,
 } from 'constants/memberConstants';
-import {useState} from 'react';
 import useCheckAll from 'hooks/useCheckAll';
+import {BsCheck2Circle} from 'react-icons/bs';
 
-const SignupForm = ({formMethods, onSubmit, onInvalid}) => {
+const SignupForm = ({formMethods, mobileAuthMethods, onSubmit, onInvalid}) => {
   // 회원가입 폼 관리를 위한 함수
   const {
     register,
@@ -27,22 +27,14 @@ const SignupForm = ({formMethods, onSubmit, onInvalid}) => {
   // 약관 전체동의를 위한 커스텀 훅
   const [checkedList, onCheckAll, onCheckElement] = useCheckAll(termsList);
 
+  // 전화번호 인증를 위한 커스텀 훅
+  const {mobile, openMobileModal, MobileAuthModal} = mobileAuthMethods;
+
   // onCheckAll()은 각 체크박스에 change 이벤트를 발생시키지 않으므로
   // 직접 각 약관의 값을 변경한다.
   const handleCheckAll = checked => {
     onCheckAll(checked);
     termsList.forEach(terms => setValue(`terms${terms.id}`, checked));
-  };
-
-  // 전화번호 인증 모달창이 열려있는지 여부를 저장
-  const [mobileModalShow, setMobileModalShow] = useState(false);
-
-  const closeMobileModal = () => setMobileModalShow(false);
-  const openMobileModal = () => setMobileModalShow(true);
-
-  /** TODO - 서버에 문자인증 요청 */
-  const requestMobileAuth = () => {
-    closeMobileModal();
   };
 
   return (
@@ -156,7 +148,10 @@ const SignupForm = ({formMethods, onSubmit, onInvalid}) => {
         </Form.Group>
 
         <Form.Group className="mb-5">
-          <Form.Label>전화번호</Form.Label>
+          <Form.Label>
+            {'전화번호'}
+            {mobile && <BsCheck2Circle color="green" />}
+          </Form.Label>
           <div className="d-grid">
             <Button variant="secondary" onClick={openMobileModal}>
               전화번호 인증하기
@@ -207,41 +202,7 @@ const SignupForm = ({formMethods, onSubmit, onInvalid}) => {
           </Button>
         </div>
       </Form>
-      <Modal
-        show={mobileModalShow}
-        onHide={closeMobileModal}
-        size="lg"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>전화번호 인증</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="signupFormMobile">
-            <Form.Label>전화번호</Form.Label>
-            <Row className="align-items-center">
-              <Col>
-                <Form.Control
-                  type="text"
-                  placeholder="전화번호를 입력해주세요."
-                  isInvalid={!!errors.mobile}
-                  autoFocus
-                  {...register('mobile')}
-                />
-              </Col>
-              <Col sm="auto">
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={requestMobileAuth}
-                >
-                  인증번호 받기
-                </Button>
-              </Col>
-            </Row>
-          </Form.Group>
-        </Modal.Body>
-      </Modal>
+      <MobileAuthModal />
     </>
   );
 };

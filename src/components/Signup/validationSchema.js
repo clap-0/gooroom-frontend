@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import {parse, isDate} from 'date-fns';
 import {
   REGEXP_NAME,
-  REGEXP_PHONENUMBER,
   emailMax,
   nameMax,
   nameMin,
@@ -22,7 +21,6 @@ export const ERRORS = {
   INVALID_PASSWORD: `비밀번호는 영문자, 숫자, 특수문자를 포함한 ${pwdMin}~${pwdMax}자입니다.`,
   INVALID_LENGTH: `최소 ${nameMin}글자를 입력해주세요.`,
   INVALID_NAME: '이름 형식이 올바르지 않습니다.',
-  INVALID_PHONENUMBER: '전화번호 형식이 올바르지 않습니다.',
   DUPLICATE_EMAIL: '이미 사용 중인 이메일입니다.',
   DUPLICATE_NICKNAME: '이미 사용 중인 닉네임입니다.',
   PASSWORD_NOT_MATCH: '비밀번호가 일치하지 않습니다.',
@@ -55,10 +53,6 @@ export const validationSchema = yup.object().shape({
     .matches(REGEXP_NAME, ERRORS.INVALID_NAME)
     .min(nameMin, ERRORS.INVALID_LENGTH)
     .max(nameMax),
-  mobile: yup // 전화번호 형식 확인
-    .string()
-    .required(ERRORS.REQUIRED)
-    .matches(REGEXP_PHONENUMBER, ERRORS.INVALID_PHONENUMBER),
   gender: yup // 성별 확인
     .string()
     .required()
