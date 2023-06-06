@@ -7,6 +7,10 @@ import * as yup from 'yup';
 import {REGEXP_PHONENUMBER} from 'constants/memberConstants';
 
 const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
+  const [verifiedMobile, setVerifiedMobile] = useMobile;
+  const [mobile, setMobile] = useState();
+  const [authNum, setAuthNum] = useState();
+
   const {
     register: registerMobile,
     handleSubmit: handleSubmitMobile,
@@ -20,6 +24,9 @@ const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
           .matches(REGEXP_PHONENUMBER, '전화번호 형식이 올바르지 않습니다.'),
       }),
     ),
+    defaultValues: {
+      mobile: verifiedMobile,
+    },
   });
 
   const {
@@ -37,10 +44,6 @@ const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
       }),
     ),
   });
-
-  const [_, setVerifiedMobile] = useMobile;
-  const [mobile, setMobile] = useState();
-  const [authNum, setAuthNum] = useState();
 
   // 서버에 주어진 전화번호로 인증번호 전송을 요청하는 함수이다.
   const requestAuthNum = data => {

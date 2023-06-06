@@ -21,6 +21,7 @@ import {PROFILE_IMAGE} from 'constants/defaultValue';
 import useAlert from 'hooks/useAlert';
 import {useNavigate} from 'react-router-dom';
 import {LOGOUT} from 'constants/path';
+import useMobileAuth from 'components/common/MobileAuth/useMobileAuth';
 
 const Settings = ({memberMethods, profileImageMethods}) => {
   const jwtAxios = useInterceptedAxios();
@@ -34,7 +35,6 @@ const Settings = ({memberMethods, profileImageMethods}) => {
   } = useForm({
     defaultValues: {
       nickname: member.nickname,
-      mobile: member.mobile,
     },
     resolver: yupResolver(profileSchema),
   });
@@ -59,23 +59,17 @@ const Settings = ({memberMethods, profileImageMethods}) => {
   const closeWithdrawModal = () => setWithdrawModalShow(false);
   const openWithdrawModal = () => setWithdrawModalShow(true);
 
-  // 전화번호 인증 모달창이 열려있는지 여부를 저장
-  const [mobileModalShow, setMobileModalShow] = useState(false);
-
-  const closeMobileModal = () => setMobileModalShow(false);
-  const openMobileModal = () => setMobileModalShow(true);
-
-  /** TODO - 서버에 문자인증 요청 */
-  const requestMobileAuth = () => {
-    closeMobileModal();
-  };
+  // 전화번호 인증를 위한 커스텀 훅
+  const {mobile, openMobileModal, MobileAuthModal} = useMobileAuth(
+    member.mobile,
+  );
 
   /**
    * 프로필 수정에서 submit 이벤트 발생시 서버에 수정을 요청하는 함수이다.
    * @param {*} data - 프로필 수정에서 수집하는 데이터
    */
   const onSubmit = async data => {
-    const {nickname, mobile} = data;
+    const {nickname} = data;
     const body = JSON.stringify({nickname, mobile});
 
     try {
@@ -360,41 +354,7 @@ const Settings = ({memberMethods, profileImageMethods}) => {
         </StyledSetting>
       </StyledSettings>
       {/* 전화번호 인증 모달 */}
-      <Modal
-        show={mobileModalShow}
-        onHide={closeMobileModal}
-        size="lg"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>전화번호 인증</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="signupFormMobile">
-            <Form.Label>전화번호</Form.Label>
-            <Row className="align-items-center">
-              <Col>
-                <Form.Control
-                  type="text"
-                  placeholder="전화번호를 입력해주세요."
-                  isInvalid={!!profileErrors.mobile}
-                  autoFocus
-                  {...profileRegister('mobile')}
-                />
-              </Col>
-              <Col sm="auto">
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={requestMobileAuth}
-                >
-                  인증번호 받기
-                </Button>
-              </Col>
-            </Row>
-          </Form.Group>
-        </Modal.Body>
-      </Modal>
+      <MobileAuthModal />
     </>
   );
 };

@@ -1,10 +1,10 @@
 import {useState} from 'react';
 import MobileAuth from './MobileAuth';
 
-const useMobileAuth = () => {
+const useMobileAuth = initialMobile => {
   // 전화번호 인증 모달창이 열려있는지 여부를 저장
   const [mobileModalShow, setMobileModalShow] = useState(false);
-  const useMobile = useState(undefined);
+  const useMobile = useState(initialMobile);
   const [mobile, _] = useMobile;
 
   const closeMobileModal = () => setMobileModalShow(false);
