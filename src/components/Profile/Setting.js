@@ -133,7 +133,6 @@ const Settings = ({memberMethods, profileImageMethods}) => {
 
     try {
       const method = profileImage === PROFILE_IMAGE ? 'post' : 'patch';
-      console.log(method);
       // 파일을 서버에 업로드한다.
       const response = await jwtAxios({
         method: method,

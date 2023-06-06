@@ -42,7 +42,6 @@ const LoginEmail = ({title}) => {
       const accessToken = response?.headers['authorization'];
 
       if (!accessToken) {
-        console.log(response);
         throw new Error('토큰 생성에 실패했습니다.');
       }
 
@@ -51,7 +50,6 @@ const LoginEmail = ({title}) => {
       return navigate('/');
     } catch (err) {
       const errorCode = err?.response?.data?.errorCode;
-      console.log(err);
       switch (errorCode) {
         case CODE.LOGIN_FAILURE:
           showAlert(

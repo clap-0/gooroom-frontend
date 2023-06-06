@@ -23,6 +23,7 @@ import NotFoundPage from 'pages/NotFoundPage';
 import MateListPage from 'pages/MateListPage';
 import MateFormPage from 'pages/MateFormPage';
 import MatePostedPage from 'pages/MatePostedPage';
+import RoomPage from 'pages/RoomPage';
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
                       element={<LoginNaver />}
                     />
                     <Route path={PATH.SIGNUP} element={<SignupPage />} />
+                    <Route path={PATH.ROOMS} element={<RoomPage />} />
                     <Route path={PATH.USERS} element={<ProfilePage />} />
                     <Route
                       path={PATH.USERS_LIFESTYLE}

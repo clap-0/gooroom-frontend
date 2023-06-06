@@ -5,14 +5,17 @@ import {useState} from 'react';
 import Button from 'components/common/Button/Button';
 import {gu} from 'constants/roomConstants';
 import {useForm} from 'react-hook-form';
-import {API_ROOMS} from 'constants/apiUrls';
-import useInterceptedAxios from 'hooks/useInterceptedAxios';
 import {SlLocationPin} from 'react-icons/sl';
 import {formatPrice} from 'utils/mateUtils';
+import UnexpectedPage from './UnexpectedPage';
+import Loading from 'components/common/Loading/Loading';
+import useRooms from 'hooks/useRooms';
+import CODE from 'constants/errorCode';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 export const ResidenceComponent = ({residenceType}) => {
   let residenceLabel = '';
-  console.log(residenceType);
   if (residenceType === 'ONE_ROOM') {
     residenceLabel = '원룸';
   } else if (residenceType === 'TWO_ROOM') {
@@ -38,72 +41,93 @@ const RoomPage = () => {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(
+      yup.object().shape({
+        city: yup.string().required().oneOf(gu),
+        dong: yup.string().required(),
+        airConditional: yup
+          .mixed()
+          .optional()
+          .transform((value, originalValue) => {
+            return ['true', 'false', 'undefined'].includes(value)
+              ? JSON.parse(value)
+              : undefined;
+          }),
+        refrigerator: yup
+          .mixed()
+          .optional()
+          .transform((value, originalValue) => {
+            return ['true', 'false', 'undefined'].includes(value)
+              ? JSON.parse(value)
+              : undefined;
+          }),
+        washingMachine: yup
+          .mixed()
+          .optional()
+          .transform((value, originalValue) => {
+            return ['true', 'false', 'undefined'].includes(value)
+              ? JSON.parse(value)
+              : undefined;
+          }),
+        parking: yup
+          .mixed()
+          .optional()
+          .transform((value, originalValue) => {
+            return ['true', 'false', 'undefined'].includes(value)
+              ? JSON.parse(value)
+              : undefined;
+          }),
+      }),
+    ),
+  });
 
-  const jwtAxios = useInterceptedAxios();
   const [address, setAddress] = useState();
 
-  const rooms0 = {
-    price: '1000',
-    rentType: 'WOLSE',
-    location: '동작구 상도1동',
-    deposit: 4000000,
-    monthlyFee: 30000,
-    residenceType: 'ONE_ROOM',
+  const [unexpectedError, setUnexpectedError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    floor: 2,
-    houseSize: 40,
-  };
-  const rooms1 = {
-    price: '1000',
-    rentType: 'JEONSE',
-    floor: '2',
-    location: '동작구 상도2동',
-    deposit: 4000000,
-    monthlyFee: 30000,
-    residenceType: 'TWO_ROOM',
-  };
-  const rooms2 = {
-    price: '1000',
-    rentType: '원룸',
-    floor: 2,
-    houseSize: 40,
-    location: '동작구 상도3동',
-    residenceType: 'APARTMENT',
-    deposit: 4000000,
-    monthlyFee: 30000,
-    city: '서울시 동작구',
-    dong: ' 상도동 ',
-  };
-  const rooms3 = {
-    price: '1000',
-    rentType: '원룸',
-    floor: 2,
-    houseSize: 40,
-    location: '동작구 상도3동',
-    residenceType: 'APARTMENT',
-    deposit: 4000000,
-    monthlyFee: 30000,
-    city: '서울시 동작구',
-    dong: ' 상도동 ',
-  };
-  const rooms4 = {
-    price: '1000',
-    rentType: '원룸',
-    floor: 2,
-    houseSize: 40,
-    location: '동작구 상도3동',
-    residenceType: 'APARTMENT',
-    deposit: 4000000,
-    monthlyFee: 30000,
-    city: '서울시 동작구',
-    dong: ' 상도동 ',
-  };
-
-  const Rooms = [rooms0, rooms1, rooms2, rooms3, rooms4];
   const [show, setShow] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [page, setPage] = useState(1);
+  const {rooms, getRooms} = useRooms();
+
+  const handleFilter = async data => {
+    setLoading(true);
+    const {
+      city = gu[0],
+      dong = '',
+      airConditional = undefined,
+      refrigerator = undefined,
+      washingMachine = undefined,
+      parking = undefined,
+    } = data;
+
+    const response = await getRooms({
+      city,
+      dong,
+      airConditional,
+      refrigerator,
+      washingMachine,
+      parking,
+    });
+
+    switch (response) {
+      case CODE.UNEXPECTED:
+        setUnexpectedError(true);
+        break;
+      default:
+    }
+
+    setLoading(false);
+  };
+
+  if (unexpectedError) {
+    return <UnexpectedPage />;
+  }
+
+  // 서버에서 데이터를 가져오는 중에는 로딩화면 렌더링
+  if (loading) {
+    return <Loading />;
+  }
 
   const handleRoomClick = location => {
     setAddress(location);
@@ -111,30 +135,6 @@ const RoomPage = () => {
 
   const showFilter = () => setShow(true);
   const hideFilter = () => setShow(false);
-
-  const handleFilter = async data => {
-    const {gu, dong, airConditional, refrigerator, washingMachine, parking} =
-      data;
-    try {
-      const response = await jwtAxios.get(API_ROOMS, {
-        params: {
-          gu,
-          dong,
-          airConditional,
-          refrigerator,
-          washingMachine,
-          parking,
-        },
-      });
-      const data = response?.data;
-      if (!data) {
-        throw new Error('No Data');
-      }
-      setRooms(() => data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <>
@@ -153,10 +153,8 @@ const RoomPage = () => {
             >
               <Form.Group controlId="formDong">
                 <Form.Select
-                  {...register('gu', {
-                    required: true,
-                  })}
-                  isInvalid={!!errors['gu']}
+                  {...register('city')}
+                  isInvalid={!!errors['city']}
                   style={{width: '8rem'}}
                 >
                   {gu.map((value, index) => (
@@ -168,9 +166,7 @@ const RoomPage = () => {
                 <Form.Control
                   maxLength={10}
                   placeholder="xx동"
-                  {...register('dong', {
-                    required: true,
-                  })}
+                  {...register('dong')}
                   isInvalid={!!errors['dong']}
                 />
               </Form.Group>
@@ -198,10 +194,10 @@ const RoomPage = () => {
                     <Form.Group className="mb-3" controlId="formAirConditioner">
                       <Form.Label>에어컨</Form.Label>
                       <Form.Select
-                        {...register('airConditional', {})}
+                        {...register('airConditional')}
                         isInvalid={!!errors['airConditional']}
                       >
-                        <option value={null}>에어컨</option>
+                        <option value={undefined}>에어컨</option>
                         <option value={true}>O</option>
                         <option value={false}>X</option>
                       </Form.Select>
@@ -209,10 +205,10 @@ const RoomPage = () => {
                     <Form.Group className="mb-3" controlId="formRefrigerator">
                       <Form.Label>냉장고</Form.Label>
                       <Form.Select
-                        {...register('refrigerator', {})}
+                        {...register('refrigerator')}
                         isInvalid={!!errors['refrigerator']}
                       >
-                        <option value={null}>냉장고</option>
+                        <option value={undefined}>냉장고</option>
                         <option value={true}>O</option>
                         <option value={false}>X</option>
                       </Form.Select>
@@ -220,10 +216,10 @@ const RoomPage = () => {
                     <Form.Group className="mb-3" controlId="formWashingMachine">
                       <Form.Label>세탁기</Form.Label>
                       <Form.Select
-                        {...register('washingMachine', {})}
+                        {...register('washingMachine')}
                         isInvalid={!!errors['washingMachine']}
                       >
-                        <option value={null}>세탁기</option>
+                        <option value={undefined}>세탁기</option>
                         <option value={true}>O</option>
                         <option value={false}>X</option>
                       </Form.Select>
@@ -231,10 +227,10 @@ const RoomPage = () => {
                     <Form.Group className="mb-3" controlId="formParking">
                       <Form.Label>주차장</Form.Label>
                       <Form.Select
-                        {...register('parking', {})}
+                        {...register('parking')}
                         isInvalid={!!errors['parking']}
                       >
-                        <option value={null}>주차장</option>
+                        <option value={undefined}>주차장</option>
                         <option value={true}>O</option>
                         <option value={false}>X</option>
                       </Form.Select>
@@ -247,7 +243,7 @@ const RoomPage = () => {
           <StyledRoomList>
             {/* 매물 출력 */}
             {/* 서버 연결가능하면 Rooms.map -> rooms  */}
-            {Rooms.map((room, index) => (
+            {rooms.map((room, index) => (
               <div
                 style={{
                   display: 'flex',
