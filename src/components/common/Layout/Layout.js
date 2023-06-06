@@ -2,6 +2,7 @@ import {Outlet} from 'react-router-dom';
 import Header from './Header';
 import Alert from 'components/common/Alert';
 import {useAlertState} from 'contexts/AlertContext';
+import Footer from './Footer';
 
 const Layout = () => {
   const alertState = useAlertState();
@@ -15,6 +16,7 @@ const Layout = () => {
       <main>
         <Outlet />
       </main>
+      <Footer></Footer>
     </>
   );
 };
