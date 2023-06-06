@@ -2,9 +2,11 @@ import {Pagination} from 'react-bootstrap';
 import {styled} from 'styled-components';
 
 export const StyledPaginationItem = styled(Pagination.Item)`
+  cursor: pointer;
+
   & > * {
-    width: 3.2rem;
-    height: 4rem;
+    width: 2.4rem;
+    height: 3rem;
     color: ${({theme}) => theme.colors.textDefault};
 
     display: flex;

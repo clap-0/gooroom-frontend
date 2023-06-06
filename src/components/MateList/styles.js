@@ -18,6 +18,10 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
+export const StyledListGroup = styled(ListGroup)`
+  width: 100%;
+`;
+
 export const MateListItem = styled(ListGroup.Item)`
   display: flex;
   justify-content: space-between;

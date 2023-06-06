@@ -1,19 +1,29 @@
-import {MATES, ROOMS, LOGOUT, USERS, LOGIN} from 'constants/path';
-import {Navbar} from 'react-bootstrap';
+import {MATES, ROOMS} from 'constants/path';
 import {Button} from 'react-bootstrap';
 import {Nav} from 'react-bootstrap';
-import {Col, Container, Row} from 'react-bootstrap';
-import {useRecoilValue} from 'recoil';
-import {AuthState} from 'stores/AuthState';
+import {Col} from 'react-bootstrap';
 import {styled} from 'styled-components';
 import {FaGithub} from 'react-icons/fa';
 
+const StyledFooter = styled.footer`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 8rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  background: white;
+`;
+
 const ColoredSpan = styled.span`
   color: #9795b5;
-  margin: none;
 `;
 const ColoredNav = styled(Nav.Link)`
   color: #9795b5;
+  white-space: nowrap;
+
   &:hover {
     color: black;
   }
@@ -21,32 +31,25 @@ const ColoredNav = styled(Nav.Link)`
 
 const Footer = () => {
   return (
-    <footer>
-      <Container>
-        <br />
-        <Row style={{alignItems: 'center'}}>
-          <Col xs={9} style={{marginTop: '8px'}}>
-            <ColoredSpan>
-              Copyright &copy; 2023 구해줘 룸메즈 | All Rights Reserved
-            </ColoredSpan>
-          </Col>
-          <Col>
-            <Nav className="ms-auto align-items-center">
-              <ColoredNav href={MATES} style={{marginLeft: '20px'}}>
-                룸메 구하기
-              </ColoredNav>
-              <ColoredNav href={ROOMS}>방 구하기</ColoredNav>&nbsp;
-              <Button
-                variant="outline-light"
-                href="https://github.com/clap-0/gooroom-frontend"
-              >
-                <FaGithub />
-              </Button>
-            </Nav>
-          </Col>
-        </Row>
-      </Container>
-    </footer>
+    <StyledFooter>
+      <Col xs={9}>
+        <ColoredSpan>
+          Copyright &copy; 2023 구해줘 룸메즈 | All Rights Reserved
+        </ColoredSpan>
+      </Col>
+      <Col>
+        <Nav className="d-flex flex-nowrap ms-auto align-items-center">
+          <ColoredNav href={MATES}>룸메 구하기</ColoredNav>
+          <ColoredNav href={ROOMS}>방 구하기</ColoredNav>&nbsp;
+          <Button
+            variant="outline-light"
+            href="https://github.com/clap-0/gooroom-frontend"
+          >
+            <FaGithub />
+          </Button>
+        </Nav>
+      </Col>
+    </StyledFooter>
   );
 };
 

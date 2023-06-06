@@ -5,8 +5,8 @@ import {
   ListItemRight,
   ListItemTitle,
   MateListItem,
+  StyledListGroup,
 } from './styles';
-import {ListGroup} from 'react-bootstrap';
 import {
   postStatusFormat,
   rentTypeFormat,
@@ -20,7 +20,7 @@ const MateList = ({mateList}) => {
   const navigate = useNavigate();
   return (
     <>
-      <ListGroup variant="flush">
+      <StyledListGroup variant="flush">
         {mateList.map((mates, index) => (
           <MateListItem
             key={index}
@@ -47,7 +47,7 @@ const MateList = ({mateList}) => {
             </ListItemRight>
           </MateListItem>
         ))}
-      </ListGroup>
+      </StyledListGroup>
     </>
   );
 };
