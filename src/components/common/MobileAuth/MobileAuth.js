@@ -5,6 +5,7 @@ import {useState} from 'react';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {REGEXP_PHONENUMBER} from 'constants/memberConstants';
+import {phoneNumberAutoFormat} from 'utils/autoFormat';
 
 const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
   const [verifiedMobile, setVerifiedMobile] = useMobile;
@@ -14,6 +15,7 @@ const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
   const {
     register: registerMobile,
     handleSubmit: handleSubmitMobile,
+    setValue,
     formState: {errors: mobileErrors},
   } = useForm({
     resolver: yupResolver(
@@ -83,9 +85,17 @@ const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
                 <Form.Control
                   type="text"
                   placeholder="전화번호를 입력해주세요."
+                  maxLength="13"
                   isInvalid={!!mobileErrors.mobile}
                   autoFocus
-                  {...registerMobile('mobile')}
+                  {...registerMobile('mobile', {
+                    onChange: e => {
+                      const formatedValue = phoneNumberAutoFormat(
+                        e.target.value,
+                      );
+                      setValue('mobile', formatedValue);
+                    },
+                  })}
                 />
               </Col>
               <Col sm="auto">

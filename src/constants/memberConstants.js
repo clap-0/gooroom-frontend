@@ -8,4 +8,4 @@ export const nameMax = 30;
 
 export const REGEXP_NAME = `^[A-Za-z가-힣\\s]+$`;
 
-export const REGEXP_PHONENUMBER = '^\\d{3}-\\d{3,4}-\\d{4}$';
+export const REGEXP_PHONENUMBER = '^\\d{3}-\\d{4}-\\d{4}$';
