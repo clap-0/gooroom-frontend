@@ -7,7 +7,7 @@ import {FaGithub} from 'react-icons/fa';
 
 const StyledFooter = styled.footer`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   height: 8rem;
@@ -20,7 +20,15 @@ const StyledFooter = styled.footer`
 const ColoredSpan = styled.span`
   color: #9795b5;
 `;
-const ColoredNav = styled(Nav.Link)`
+
+const StyledNav = styled(Nav)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
+`;
+
+const ColoredNavLink = styled(Nav.Link)`
   color: #9795b5;
   white-space: nowrap;
 
@@ -32,22 +40,23 @@ const ColoredNav = styled(Nav.Link)`
 const Footer = () => {
   return (
     <StyledFooter>
-      <Col xs={9}>
+      <Col>
         <ColoredSpan>
           Copyright &copy; 2023 구해줘 룸메즈 | All Rights Reserved
         </ColoredSpan>
       </Col>
       <Col>
-        <Nav className="d-flex flex-nowrap ms-auto align-items-center">
-          <ColoredNav href={MATES}>룸메 구하기</ColoredNav>
-          <ColoredNav href={ROOMS}>방 구하기</ColoredNav>&nbsp;
+        <StyledNav className="d-flex flex-nowrap justify-flex-end align-items-center">
+          <ColoredNavLink href={MATES}>룸메 구하기</ColoredNavLink>
+          <ColoredNavLink href={ROOMS}>방 구하기</ColoredNavLink>&nbsp;
           <Button
+            style={{transition: '0.25s'}}
             variant="outline-light"
             href="https://github.com/clap-0/gooroom-frontend"
           >
             <FaGithub />
           </Button>
-        </Nav>
+        </StyledNav>
       </Col>
     </StyledFooter>
   );

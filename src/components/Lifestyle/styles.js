@@ -4,8 +4,10 @@ import styled from 'styled-components';
 export const StyledLifestyle = styled(Card)`
   min-width: 30rem;
   max-width: 32rem;
+
   background: #ffffff;
-  margin-bottom: 3rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 5px 5px 20px;
 `;
 
 export const StyledLifestyleTop = styled(Card.Body)`

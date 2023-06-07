@@ -30,10 +30,18 @@ const FormContent = styled(Card.Body)`
   align-items: center;
 `;
 
+const StyledCard = styled(Card)`
+  min-width: 25rem;
+  width: 35%;
+
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 5px 5px 20px;
+`;
+
 export const FormContainer = ({children}) => {
   return (
     <FormPositioner>
-      <Card>
+      <StyledCard>
         <Logo variant="top" as="div">
           <Link
             to="/"
@@ -55,7 +63,7 @@ export const FormContainer = ({children}) => {
           </Link>
         </Logo>
         <FormContent>{children}</FormContent>
-      </Card>
+      </StyledCard>
     </FormPositioner>
   );
 };
