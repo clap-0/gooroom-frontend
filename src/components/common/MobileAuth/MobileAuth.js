@@ -90,10 +90,10 @@ const MobileAuth = ({useMobile, mobileModalShow, closeMobileModal}) => {
                   autoFocus
                   {...registerMobile('mobile', {
                     onChange: e => {
-                      const formatedValue = phoneNumberAutoFormat(
+                      const formattedValue = phoneNumberAutoFormat(
                         e.target.value,
                       );
-                      setValue('mobile', formatedValue);
+                      setValue('mobile', formattedValue);
                     },
                   })}
                 />

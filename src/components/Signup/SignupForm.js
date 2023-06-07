@@ -140,7 +140,7 @@ const SignupForm = ({formMethods, mobileAuthMethods, onSubmit, onInvalid}) => {
         <Form.Group className="mb-5">
           <Form.Label>생년월일</Form.Label>
           <Form.Control
-            type="text"
+            type="date"
             placeholder="생일을 입력해주세요."
             isInvalid={!!errors.birthdate}
             {...register('birthdate')}
