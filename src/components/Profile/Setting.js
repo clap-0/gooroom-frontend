@@ -1,5 +1,5 @@
 import Button from 'components/common/Button/Button';
-import {nameMax, nameMin, pwdMax} from 'constants/memberConstants';
+import {emailMax, nameMax, nameMin, pwdMax} from 'constants/memberConstants';
 import {Col, Form, Image, Modal, Row} from 'react-bootstrap';
 import {FaRegEdit} from 'react-icons/fa';
 import {useRef} from 'react';
@@ -34,6 +34,7 @@ const Settings = ({memberMethods, profileImageMethods}) => {
     formState: {errors: profileErrors},
   } = useForm({
     defaultValues: {
+      email: member.email,
       nickname: member.nickname,
     },
     resolver: yupResolver(profileSchema),
@@ -212,6 +213,17 @@ const Settings = ({memberMethods, profileImageMethods}) => {
                   onSubmit={handleProfileSubmit(onSubmit, onInvalid)}
                   noValidate
                 >
+                  <Form.Group className="mb-5">
+                    <Form.Label>이메일</Form.Label>
+                    <Form.Control
+                      type="text"
+                      maxLength={emailMax}
+                      placeholder="이메일을 입력해주세요."
+                      isInvalid={!!profileErrors.email}
+                      {...profileRegister('email')}
+                      disabled
+                    />
+                  </Form.Group>
                   <Form.Group className="mb-5">
                     <Form.Label>닉네임</Form.Label>
                     <Form.Control

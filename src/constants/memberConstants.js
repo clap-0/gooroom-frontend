@@ -9,3 +9,6 @@ export const nameMax = 30;
 export const REGEXP_NAME = `^[A-Za-z가-힣\\s]+$`;
 
 export const REGEXP_PHONENUMBER = '^\\d{3}-\\d{4}-\\d{4}$';
+
+export const REGEXP_EMAIL =
+  '^[\\w!#$%&’*+\\/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+\\/=?`{|}~^-]+)*@(?:[a-zA-Z\\d-]+\\.)+[a-zA-Z]{2,6}$';

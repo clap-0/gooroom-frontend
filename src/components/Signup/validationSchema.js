@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import {parse, isDate} from 'date-fns';
 import {
+  REGEXP_EMAIL,
   REGEXP_NAME,
   emailMax,
   nameMax,
@@ -8,9 +9,6 @@ import {
   pwdMax,
   pwdMin,
 } from 'constants/memberConstants';
-
-const REGEXP_EMAIL =
-  '^[\\w!#$%&’*+\\/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+\\/=?`{|}~^-]+)*@(?:[a-zA-Z\\d-]+\\.)+[a-zA-Z]{2,6}$';
 
 const REGEXP_PASSWORD = `^.*(?=^.{${pwdMin},${pwdMax}}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$`;
 
