@@ -1,5 +1,6 @@
 /* global kakao */
 import React, {useEffect} from 'react';
+import logo from 'assets/images/Square.svg';
 
 const {kakao} = window;
 
@@ -19,9 +20,19 @@ const Room = ({address}) => {
         if (status === kakao.maps.services.Status.OK) {
           var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
+          var imageSrc = logo,
+            imageSize = new kakao.maps.Size(64, 69),
+            imageOption = {offset: new kakao.maps.Point(27, 69)};
+          var markerImage = new kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize,
+            imageOption,
+          );
+
           var markerPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
           var marker = new kakao.maps.Marker({
             position: markerPosition,
+            image: markerImage,
           });
           marker.setMap(map);
           map.setCenter(coords);
