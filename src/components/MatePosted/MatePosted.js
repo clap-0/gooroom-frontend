@@ -26,6 +26,8 @@ import {useState} from 'react';
 import Dropdown from 'components/common/Dropdown/Dropdown';
 import DropdownItem from 'components/common/Dropdown/DropdownItem';
 import KakaoMap from './KaKaoMap';
+import {RiUserSearchLine} from 'react-icons/ri';
+import {BsHouse} from 'react-icons/bs';
 
 const DefaultDiv = styled.div`
   display: flex;
@@ -49,6 +51,7 @@ const StyledMatePostedController = styled.div`
 
 const PostedDescriptionSpan = styled.span`
   color: #000000;
+  font-weight: 500;
 `;
 
 const PostedMetadata = styled(Stack)`
@@ -260,7 +263,7 @@ const MatePosted = ({
 
           <Stack direction="horizontal" gap={2}>
             {/* 게시글 유형 집 O/X */}
-            <span>{hasHomeFormat[mateInfo.hasHome]}</span>
+            {mateInfo.hasHome ? <BsHouse /> : <RiUserSearchLine />}
             {/* 마지막 수정으로부터 지난 시간 */}
             <span>
               {formatDifferenceInTimes(
@@ -272,10 +275,8 @@ const MatePosted = ({
 
           <Stack direction="horizontal" gap={2}>
             {/* 거주 유형 */}
-            <PostedDescriptionSpan>
-              {residenceTypeFormat[mateInfo?.residenceType]}
-            </PostedDescriptionSpan>
-            <PostedDescriptionSpan>|</PostedDescriptionSpan>
+            <span>{residenceTypeFormat[mateInfo?.residenceType]}</span>
+            <span>|</span>
             {/* 월/전세 */}
             <PostedDescriptionSpan>
               {rentTypeFormat[mateInfo?.rentType]}
