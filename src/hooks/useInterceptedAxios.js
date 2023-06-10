@@ -29,7 +29,7 @@ const useInterceptedAxios = () => {
       response => response,
       async error => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 406 && !prevRequest?.sent) {
+        if (error?.response?.status === 499 && !prevRequest?.sent) {
           // 토큰이 만료되었을 때 재발급받아서 곧바로 전송
           prevRequest.sent = true;
 
